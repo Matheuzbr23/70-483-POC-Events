@@ -44,6 +44,39 @@ namespace WinFormUI
             savingsTransactions.DataSource = customer.SavingsAccount.Transactions;
             checkingBalanceValue.Text = string.Format("{0:C2}", customer.CheckingAccount.Balance);
             savingsBalanceValue.Text = string.Format("{0:C2}", customer.SavingsAccount.Balance);
+
+            customer.CheckingAccount.TransactionApprovedEvent += CheckingAccount_TransactionApprovedEvent;
+            customer.SavingsAccount.TransactionApprovedEvent += SavingsAccount_TransactionApprovedEvent;
+
+            customer.CheckingAccount.OverdraftEvent += CheckingAccount_OverdraftEvent;
+
+            customer.CheckingAccount.ValidationEvent += ValidationEvent;
+            customer.SavingsAccount.ValidationEvent += ValidationEvent;
+        }
+
+        private void ValidationEvent(object sender, string e)
+        {
+            MessageBox.Show(e);
+        }
+
+        private void CheckingAccount_OverdraftEvent(object sender, OverDraftEventArgs e)
+        {
+            errorMessage.Text = $"You had an overdaft protection transfer of {e.AmountOverDrafted:C2}";
+            errorMessage.Visible = true;
+        }
+
+        private void SavingsAccount_TransactionApprovedEvent(object sender, string e)
+        {
+            savingsTransactions.DataSource = null;
+            savingsTransactions.DataSource = customer.SavingsAccount.Transactions;
+            savingsBalanceValue.Text = string.Format("{0:C2}", customer.SavingsAccount.Balance);
+        }
+
+        private void CheckingAccount_TransactionApprovedEvent(object sender, string e)
+        {
+            checkingTransactions.DataSource = null;
+            checkingTransactions.DataSource = customer.CheckingAccount.Transactions;
+            checkingBalanceValue.Text = string.Format("{0:C2}", customer.CheckingAccount.Balance);
         }
 
         private void recordTransactionsButton_Click(object sender, EventArgs e)

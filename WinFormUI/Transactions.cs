@@ -20,12 +20,23 @@ namespace WinFormUI
             _customer = customer;
 
             customerText.Text = _customer.CustomerName;
+            _customer.CheckingAccount.OverdraftEvent += CheckingAccount_OverdraftEvent;
+        }
+
+        private void CheckingAccount_OverdraftEvent(object sender, OverDraftEventArgs e)
+        {
+            errorMessage.Visible = true;
         }
 
         private void makePurchaseButton_Click(object sender, EventArgs e)
         {
             bool paymentResult = _customer.CheckingAccount.MakePayment("Credit Card Purchase", amountValue.Value, _customer.SavingsAccount);
             amountValue.Value = 0;
+        }
+
+        private void ErrorMessage_Click(object sender, EventArgs e)
+        {
+            errorMessage.Visible = false;
         }
     }
 }

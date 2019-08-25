@@ -3,3 +3,8 @@
 ################################################################################
 
 /.vs/EventsDemo/v16/Server/sqlite3
+/.vs/EventsDemo/v16
+/DemoLibrary/bin/Debug
+/DemoLibrary/obj/Debug
+/WinFormUI/bin/Debug
+/WinFormUI/obj/Debug
